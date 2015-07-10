@@ -1,7 +1,17 @@
 package com.robo.p99.scala
 
+/**
+ * Reverse a list.
+ */
 object P05 {
 
-  // TODO
+  def reverse0[T](l : List[T]): List[T] = l.reverse
+
+  def reverse[T](l : List[T]): List[T] = l.foldLeft(List.empty[T])(_ :+ _)
+
+  def reverseRec[T](l : List[T]): List[T] = l match {
+    case x :: xs => reverseRec(xs) :+ x
+    case Nil => Nil
+  }
 
 }
