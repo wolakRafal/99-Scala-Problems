@@ -13,7 +13,7 @@ import org.p99.scala.UnitSpec
 class P03Spec extends UnitSpec {
 
   "nth" should "Find the Kth element of a list" in {
-    nth(2, List(1, 1, 2, 3, 5, 8)) == 2
+    assert(nth(2, List(1, 1, 2, 3, 5, 8)) === 2)
   }
 
   it should " throw IndexOutOfBounds" in {
@@ -23,7 +23,7 @@ class P03Spec extends UnitSpec {
   }
 
   "nthRec" should "Find the Kth element of a list" in {
-    nthRec(2, List(1, 1, 2, 3, 5, 8)) == 2
+    assert(nthRec(2, List(1, 1, 2, 3, 5, 8)) === 2)
   }
 
   it should " throw IndexOutOfBounds" in {

@@ -10,18 +10,18 @@ import P04._
 class P04Spec extends UnitSpec {
 
   "length" should "Find the number of elements of a list" in {
-    length(List(1,2,3,4)) === 4
-    lengthRec(List(1,2,3,4)) === 4
+    assert(length(List(1,2,3,4)) === 4)
+    assert(lengthRec(List(1,2,3,4)) === 4)
   }
 
   it should "return 0 for empty list" in {
-    length(List()) === 0
-    lengthRec(List()) === 0
+    assert(length(List()) === 0)
+    assert(lengthRec(List()) === 0)
   }
 
   it should "return 1 for one element list" in {
-    length(List(1)) === 1
-    lengthRec(List(1)) === 1
+    assert(length(List(1)) === 1)
+    assert(lengthRec(List(1)) === 1)
   }
 
 }

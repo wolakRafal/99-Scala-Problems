@@ -15,11 +15,11 @@ res0: List[Symbol] = List('a, 'b, 'c, 'a, 'd, 'e)
 class P08Spec extends UnitSpec {
 
   "compress" should "Eliminate consecutive duplicates of list elements. " in {
-    compress(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)) === List('a, 'b, 'c, 'a, 'd, 'e)
+    assert(compress(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)) === List('a, 'b, 'c, 'a, 'd, 'e))
   }
 
   it should "work with empty list" in {
-    compress(List()) === List()
+    assert(compress(List()) === List())
   }
 
 }

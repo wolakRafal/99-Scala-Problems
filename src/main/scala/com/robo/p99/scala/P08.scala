@@ -13,7 +13,7 @@ res0: List[Symbol] = List('a, 'b, 'c, 'a, 'd, 'e)
 object P08 {
 
   def compress[T](l : List[T]) : List[T] = {
-    l.foldLeft(List.empty[T])((acc, a) => if (acc.contains(a)) acc else acc :+ a )
+    l.foldLeft(List.empty[T])((acc, a) => if (acc.nonEmpty && acc.last == a) acc else acc :+ a )
   }
 
 }

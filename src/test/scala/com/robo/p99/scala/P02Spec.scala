@@ -18,8 +18,8 @@ class P02Spec extends UnitSpec {
   }
 
   it should "Find the last but one element of a list" in {
-    penultimate(List("one", "two")) == "two"
-    penultimate(List(1,2,2,1,3,4,5,6,7,8)) == 7
+    assert(penultimate(List("one", "two", "three")) == "two")
+    assert(penultimate(List(1,2,2,1,3,4,5,6,7,8)) == 7)
   }
 
 }

@@ -14,15 +14,15 @@ res0: List[Int] = List(8, 5, 3, 2, 1, 1)
 class P05Spec extends UnitSpec {
 
   "reverse" should "reverse a list" in {
-    reverse0(List("a", "b", "z")) === List("z","b","a")
-    reverse(List("a", "b", "z")) === List("z","b","a")
-    reverseRec(List("a", "b", "z")) === List("z","b","a")
+    assert(reverse0(List("a", "b", "z")) === List("z", "b", "a"))
+    assert(reverse(List("a", "b", "z")) === List("z", "b", "a"))
+    assert(reverseRec(List("a", "b", "z")) === List("z", "b", "a"))
   }
 
   it should "return empty list for empty list input" in {
-    reverse0(List()) === List()
-    reverse(List()) === List()
-    reverseRec(List()) === List()
+    assert(reverse0(List()) === List())
+    assert(reverse(List()) === List())
+    assert(reverseRec(List()) === List())
   }
 
 }

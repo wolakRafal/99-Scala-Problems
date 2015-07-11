@@ -7,7 +7,7 @@ object P05 {
 
   def reverse0[T](l : List[T]): List[T] = l.reverse
 
-  def reverse[T](l : List[T]): List[T] = l.foldLeft(List.empty[T])(_ :+ _)
+  def reverse[T](l: List[T]): List[T] = l.foldLeft(List.empty[T])((acc, a) => a :: acc)
 
   def reverseRec[T](l : List[T]): List[T] = l match {
     case x :: xs => reverseRec(xs) :+ x
