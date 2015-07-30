@@ -17,7 +17,7 @@ The third and fourth lists have length 3 and there are two list of this length. 
  */
 object P30 {
 
-  /** retruns map where key is list length, and value is a frequency of this list size in source 'list' */
+  /** returns map where key is list length, and value is a frequency of this list size in source 'list' */
   private def frequency[T](list: List[List[T]]): Map[Int,Int] = {
     list.foldLeft(Map.empty[Int,Int])((acc, l) => acc.updated(l.size,acc.getOrElse(l.size,0) + 1))
   }
