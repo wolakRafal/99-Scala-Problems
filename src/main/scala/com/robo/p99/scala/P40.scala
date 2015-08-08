@@ -18,11 +18,23 @@ object P40 {
   def goldbach(n: Int): (Int, Int) = {
     assert(n > 2)
     val primesStream = Stream.from(3).filter(P31.isPrime)
-    val a = primesStream.head
+    val a = primesStream.filter(a => P31.isPrime(n - a)).head
     val b = n - a
-    assert(P31.isPrime(b))
 
     (a, b)
   }
+
+  /** Both bigger than limit */
+  def goldbachLimited(limit: Int)(n: Int): Option[(Int, Int)] = {
+    assert(n > 2)
+    val nHalf = n / 2
+    assert(limit < nHalf)
+
+    val primesStream = Stream.from(limit).filter(P31.isPrime).takeWhile(_ < nHalf)
+    val aOpt = primesStream.filter(a => P31.isPrime(n - a)).filter(n - _ >= limit).headOption
+
+    aOpt.map(a => (a, n - a))
+  }
+
 
 }
