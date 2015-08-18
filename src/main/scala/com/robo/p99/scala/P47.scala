@@ -1,8 +1,5 @@
 package com.robo.p99.scala
 
-import org.scalacheck.Properties
-import org.scalacheck.Prop.forAll
-
 /**
  * P47 (medium)
 You need to do P46 first.
@@ -18,6 +15,17 @@ false false false
  */
 object P47 {
 
-  private def BooleanPairGen = ???
+  private val input = List((true, true), (true, false), (false, true), (false, false))
+
+  def table2(f: (Boolean, Boolean) => Boolean): Unit = {
+    println("A\tB\tresult\t")
+    val result = input.map{case (a,b) => f(a,b)}
+    val toPrint = input zip result
+
+    toPrint foreach {
+      case ((a,b), r) => println(s"$a\t$b\t$r")
+    }
+  }
+
 
 }
