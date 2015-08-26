@@ -14,6 +14,7 @@ res0: List[String, String] = List((a,0), (b,101), (c,100), (d,111), (e,1101), (f
 object P50 {
 
   sealed trait HuffmanTree
+
   case class Node(symbol: Option[String], freq: Int, l: Option[Node] = None, r: Option[Node] = None) extends HuffmanTree
 
   // invariant: t1 < t2
@@ -21,13 +22,13 @@ object P50 {
     Node(None, t1.freq + t2.freq, Some(t1), Some(t2))
   }
 
-  def huffman_(l: List[(String, Int)]): List[(String, String)] = {
+  def huffman(l: List[(String, Int)]): List[(String, String)] = {
     val treeList: List[Node] = l.sortBy(_._2).map { case (s, f) => Node(Some(s), f) }
 
     def huffman0(lh: List[Node]): List[Node] = {
       lh match {
         case l@List(t) => l
-        case a :: b :: tail => huffman0( (combine(a, b) :: tail).sortBy(_.freq))
+        case a :: b :: tail => huffman0((combine(a, b) :: tail).sortBy(_.freq))
       }
     }
 
@@ -35,67 +36,13 @@ object P50 {
     traverse(Some(huffmanTree), "")
   }
 
-
-  // Other algohrithm
-  def huffman(l: List[(String, Int)]): List[(String, String)] = {
-
-    val inputQ: List[Node] = l.sortBy(_._2).map { case (s, f) => Node(Some(s), f) }
-
-    def huffman0(firstQ: List[Node], secondQ: List[Node]): List[Node] = {
-      var firstNode: Node = null
-      var secondNode: Option[Node] = None
-
-      var firstQueue: List[Node] = firstQ
-      var secondQueue: List[Node] = secondQ
-
-      val a = firstQ.headOption
-      if (a.isDefined) {
-        val b = secondQ.headOption
-        if(b.isDefined){
-          if (a.get.freq <= b.get.freq) {
-            firstNode = a.get
-            secondNode = b
-          } else {
-            firstNode = b.get
-            secondNode = a
-          }
-          secondQueue = secondQ.tail
-          firstQueue= firstQ.tail
-        } else {
-          firstNode = a.get
-          secondNode = firstQ.tail.headOption
-          firstQueue = if(secondNode.isEmpty) firstQ.tail else  firstQ.tail.tail
-        }
-      } else { // first queue is empty
-        val b = secondQ.headOption
-        if(b.isDefined){
-          firstNode = b.get
-          secondNode = secondQ.tail.headOption
-          firstQueue = if(secondNode.isEmpty) secondQ.tail else  secondQ.tail.tail
-        } else { // must not happen
-          throw new IllegalArgumentException("Algorhitm is wrong! This should never happen")
-        }
-      }
-
-      (firstNode ,secondNode) match {
-        case (a, None) => List(a)
-        case (a, Some(b)) => huffman0(firstQueue, secondQueue :+ combine(a, b))
-      }
-    }
-
-    val huffmanTree = huffman0(inputQ, List.empty).head
-    println("huffmanTree =" +  huffmanTree)
-    traverse(Some(huffmanTree), "")
-  }
-
-
   /** Traverse Huffman tree and encode nodes with 0 when goes left, with 1 when goes right */
   def traverse(huffmanTree: Option[HuffmanTree], huffmanCode: String): List[(String, String)] = {
     huffmanTree match {
       case Some(Node(None, _, l, r)) => // root
-        traverse(l, "0" + huffmanCode) ++ traverse(r, "1" + huffmanCode)
+        traverse(l, huffmanCode + "0") ++ traverse(r, huffmanCode + "1")
       case Some(Node(Some(s), _, l, r)) =>
-        (s, huffmanCode) :: traverse(l, "0" + huffmanCode) ++ traverse(r, "1" + huffmanCode)
+        (s, huffmanCode) :: traverse(l, huffmanCode + "0") ++ traverse(r, huffmanCode + "1")
       case None => Nil
     }
   }
