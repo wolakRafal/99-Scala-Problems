@@ -23,45 +23,43 @@ object P52 {
 
     import scala.math.pow
 
-    private val lnOf2 = scala.math.log(2) // natural log of 2
+    private val lnOf2 = scala.math.log(2)
+
+    // natural log of 2
     def log2(x: Double): Double = scala.math.log(x) / lnOf2
 
     /** Returns height (or degree) of balanced tree with 'n' elements. In other words: Log2(n+1) */
-    def maxPossibleTreeHight(n: Int): Int = log2(n + 1).toInt
+    def maxPossibleTreeHight(n: Int): Int = log2(n).toInt + 1
 
-    def createFullTree[V](treeHeight: Int, v: V): Node[V] = {
+    def createFullTree[V](treeHeight: Int, nodeNo: Int, v: V): Tree[(Int, V)] = {
       treeHeight match {
-        case 1 => Node(v, End, End)
-        case h => Node(v, createFullTree(h - 1, v), createFullTree(h - 1, v))
+        case 1 => Node((nodeNo, v), End, End)
+        case h =>
+          val c = (pow(2, h - 1) / 2).toInt
+          Node((nodeNo, v), createFullTree(h - 1, nodeNo - c, v), createFullTree(h - 1, nodeNo + c, v))
       }
     }
 
-    def createPath(h: Int, magic: Int, pos: Int, path: List[String]): List[String] = {
-      val n = pow(2, h - 1).toInt
-      val rootValue = magic + (n >> 1)
-      if (pos < rootValue) { // go Left
-        createPath(h - 1, magic, pos, path :+ "L")
-      } else if (pos > rootValue) { // go right
-        createPath(h - 1, magic + rootValue, pos, path :+ "R")
-      } else {
-        path // return path we found
-      }
-    }
-
-    def insertLeafAt[T](pos: Int, h: Int, node: Node[T], tree: Node[T]): Node[T] = {
-      val path: List[String] = createPath(h, 0, pos, List.empty[String])
-
-      def traverse0(p: List[String], subTree: Node[T]): Node[T] = {
-        p match {
-          case Nil => node
-          case x :: xs => if (x == "L") {
-            traverse0(xs, subTree.left.asInstanceOf[Node[T]])
+    def insertLeafAt[V](pos: Int, nodeToInsert: Node[(Int, V)], t: Tree[(Int, V)]): Tree[(Int, V)] = {
+      t match {
+        case tree: Node[(Int,V)] =>
+          if (tree.isLeaf) {
+            if (pos == tree.value._1) {
+              tree.copy(left = nodeToInsert)
+            } else {
+              tree.copy(right = nodeToInsert)
+            }
           } else {
-            traverse0(xs, subTree.right.asInstanceOf[Node[T]])
+            if (pos > tree.value._1) {
+              //go right
+              Node(tree.value, tree.left, insertLeafAt(pos, nodeToInsert, tree.right))
+            } else {
+              // go left
+              Node(tree.value, insertLeafAt(pos, nodeToInsert, tree.left), tree.right)
+            }
           }
-        }
+        case End => t
       }
-      traverse0(path, tree)
     }
 
     /**
@@ -71,14 +69,21 @@ object P52 {
      * @tparam V value Type
      * @return all solutions of balanced Binary Tree
      */
-    def cBalanced[V](n: Int, v: V): List[Node[V]] = {
+    def cBalanced[V](n: Int, v: V): List[Tree[(Int, V)]] = {
       val h = maxPossibleTreeHight(n)
+      println("h=" + h)
       val leafsCount = scala.math.pow(2, h - 1).toInt // # of leafs at the bottom of the tree
-      val nodesLeft = n - leafsCount                  // nodes left
-      val leafsCombinations = List.range(1, leafsCount).combinations(nodesLeft) // list contains positions on which Leafs are placed
-      val fullTree = createFullTree(h, v)
+      val fullTreeleafsCount = leafsCount - 1
 
-      leafsCombinations.map(l => l.foldRight(fullTree)((pos, acc) => insertLeafAt(pos, h, Node(v), acc))).toList
+      println(s"leafsCount = $leafsCount ")
+      val nodesLeft = leafsCount - (n - fullTreeleafsCount)
+      println(s"nodesLeft = $nodesLeft ")
+
+      val leafsCombinations = List.range(1, leafsCount + 1).combinations(leafsCount - nodesLeft).toList // list contains positions on which Leafs are placed
+      println(s"leafsCombinations  = $leafsCombinations ")
+      val fullTree = createFullTree(h - 1, leafsCount / 2, v)
+
+      leafsCombinations.map(l => l.foldRight(fullTree)((pos, acc) => insertLeafAt(pos, Node((pos, v)), acc)))
     }
   }
 
