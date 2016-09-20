@@ -1,4 +1,4 @@
-package codility.task1
+package codility
 
 // you can write to stdout for debugging purposes, e.g.
 // println("this is a debug message")

@@ -19,7 +19,7 @@
   * ****************************************************************************
   */
 
-package codility.task1
+package codility
 
 import org.specs2.mutable.Specification
 
