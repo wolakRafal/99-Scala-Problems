@@ -24,21 +24,18 @@ class MinimizeEquilibriumSpec extends Specification {
       MinimizeEquilibrium.solution(Array(3,1,2,4,3)) must_== 1
     }
 
-    "For Array[1] return 0" in {
-      MinimizeEquilibrium.solution(Array(1)) must_== 0
-    }
 
 
     "For Array[1,1] return 0" in {
       MinimizeEquilibrium.solution(Array(1,1)) must_== 0
     }
 
-    "For Array[100,0] return 100" in {
-      MinimizeEquilibrium.solution(Array(100,1)) must_== 100
+    "For Array[100,0,1] return 100" in {
+      MinimizeEquilibrium.solution(Array(100,0,1)) must_== 99
     }
 
-    "For Array[0,100] return 100" in {
-      MinimizeEquilibrium.solution(Array(1, 100)) must_== 100
+    "For Array[0,1,100] return 99" in {
+      MinimizeEquilibrium.solution(Array(0, 1, 100)) must_== 99
     }
 
   }
